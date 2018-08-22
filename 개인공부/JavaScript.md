@@ -781,6 +781,7 @@
   - ThisBinding은 실행컨텍스트 활성화될 때 한다.
     - 즉, this가 함수가 호출될 때 비로소 결정되는 것이다.
     - 호출하는 방식에 따라 다르다 ⇒ 동적으로 바인딩 된다.
+    - 오브젝트 내 함수안에서 쓰면 그 함수를 가지고 있는 오브젝트를 뜻한다.
 
 <br>
 
@@ -1031,3 +1032,56 @@ console.log(toObject(...fruits));
 ```
 
 객체 데이터를 사용할 때는 중괄호 `{}`를 사용하는데 중괄호는 화살표 함수 `=>` 에서 함수의 범위를 나타내는 블럭으로 해석이 된다. 그렇기 때문에 소괄호 `()` 를 사용해서 객체 데이터를 정의해주자. `({a, b, c})`
+
+<br>
+
+## Arrow function
+
+- Arrow function 장점
+
+  - 입출력 기계 만들 때 보기 쉽다.
+
+  ```jsx
+  const 함수 = (a) => {
+    return a + 10;
+  };
+  ```
+
+  - 파라미터가 1개면 소괄호 생략이 가능하다.
+  - 코드가 한 줄이면 중괄호도 생략이 가능하다.
+
+- Arrow function 예시
+
+  - forEach 콜백함수
+
+  ```jsx
+  // array 자료 개수만큼 내부 코드 실행. a는 array 내의 자료들
+  [1, 2, 3, 4].forEach(function (a) {
+    console.log(a);
+  });
+
+  // Arrow function 사용
+  [1, 2, 3, 4].forEach((a) => console.log(a));
+  ```
+
+  - 이벤트 리스너
+
+  ```jsx
+  document.getElementById("버튼").addEventListener("click", (e) => {
+    this;
+  });
+  ```
+
+  바깥에 있던 this값을 내부에서 그대로 사용.
+  일반 이벤트 리스너에선 `this == e.currentTarget`이지만 arrow function에서는 `this == 바깥의 this값`
+
+- Object 안의 함수
+
+```jsx
+const 오브젝트 = {
+  함수: () => {
+    console.log("Arrow Function");
+  },
+};
+오브젝트.함수();
+```
