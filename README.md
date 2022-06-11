@@ -10,4 +10,4 @@
 <br>
 
 - 개인공부
-  - [자바스크립트 배열 메소드 복습](https://github.com/tada-js/today-i-learned/blob/main/%EA%B0%9C%EC%9D%B8%EA%B3%B5%EB%B6%80/%EB%B3%B5%EC%8A%B5_%EB%B0%B0%EC%97%B4_%EB%A9%94%EC%86%8C%EB%93%9C.md)
+  - [JavaScript 학습 및 복습](https://github.com/tada-js/today-i-learned/blob/main/%EA%B0%9C%EC%9D%B8%EA%B3%B5%EB%B6%80/JavaScript.md)
