@@ -550,3 +550,139 @@
   - 메모리 구조 공간에는 값이 하나씩 밖에 못 들어간다
 
 ---
+
+## 비동기, 동기
+
+- 자바스크립트 싱글 스레드
+
+  - 예제1(작업 수행 방식)
+
+  ```jsx
+  function taskA() {
+    console.log("TASK A");
+  }
+
+  function taskB() {
+    console.log("TASK B");
+  }
+
+  function taskC() {
+    console.log("TASK C");
+  }
+
+  taskA();
+  taskB();
+  taskC();
+  ```
+
+  - 동기 방식의 처리
+    - |Thread| → |taskA| → |taskB| → |taskC|
+      0.3초 0.5초 0.2초
+    - 자바스크립트는 코드가 작성된 순서대로 작업을 처리함
+    - 이전 작업이 진행 중 일 때는 다음 작업을 수행하지 않고 기다림 ⇒ 블로킹 방식 (taskA가 끝나야 taskB를 실행)
+    - 먼저 작성된 코드를 먼저 다 실행하고 나서 뒤에 작성된 코드를 실행한다.
+    - 스레드는 코드를 한 줄 한 줄 실행시켜 주는 친구(일꾼)
+  - 동기처리 방식의 문제점
+    - |Thread| → |taskA| → |taskB| → |taskC|
+      0.3초 20초 10초
+    - 동기적 처리의 단점은 하나의 작업이 너무 오래 걸리게 될 시, 모든 작업이 오래 걸리는 하나의 작업이 종료되기 전 까지 올 스탑 되기 때문에, 전반적인 흐름이 느려진다.
+    - 웹사이트에서 버튼 하나를 눌렀는데 처리가 30초 씩 걸리면? 속 터진다.
+  - 멀티 쓰레드였다면?
+
+    - |Thread| → |taskA|
+      0.3초
+    - |ThreadA| → |taskB|
+      20초
+    - |ThreadB| → |taskC|
+      10초
+    - 코드를 실행하는 친구(일꾼) Thread를 여러 개 사용하는 방식인 멀티쓰레드(MultiThread) 방식으로 작동시키면 위와 같이 작업 분할 가능
+    - 오래 걸리는 일이 있어도 다른 일꾼 Thread에게 지시하면 되므로 괜찮음
+    - 하지만 자바스크립트는 싱글 쓰레드로 동작함
+    - 여러 친구(일꾼)을 여러 개 사용하는 방법은 사용 불가
+
+  - 비동기 작업(싱글 쓰레드 방식의 동기처리 문제점 극복)
+    - |Thread| → |taskA| → …
+      |taskB| 20초
+      |taskC| 30초
+    - 싱글 쓰레드 방식을 이용하면서, 동기적 작업의 단점을 극복하기 위해 여러 개의 작업을 동시에 실행시킨다.
+    - 먼저 작성된 코드의 결과를 기다리지 않고 다음 코드를 바로 실행함 ⇒ 논 블로킹 방식
+      그렇다면 작업을 동시에 실행시키는 비동기는 결과가 정상적으로 끝났는지, 결과는 나왔는지 어떻게 확인할 수 있을까?
+      그럴 때는 비동기로 실행된 A, B, C에게 작업이 끝나면 콜백 함수를 실행시키게 하면 된다.
+  - 콜백함수 사용
+    - 예제1
+      ```jsx
+      taskA((resultA) => {
+        console.log(`A 끝. 작업 결과 : ${resultA}`); // A 콜백
+      });
+      taskB((resultB) => {
+        console.log(`A 끝. 작업 결과 : ${resultB}`); // B 콜백
+      });
+      taskC((resultC) => {
+        console.log(`A 끝. 작업 결과 : ${resultC}`); // C 콜백
+      });
+      ```
+    - |Thread| → |taskA, A 콜백| → …
+      |taskB, B 콜백| 20초
+      |taskC, C 콜백| 10초
+    - 이렇듯, 비동기 처리할 때는 콜백함수를 붙여서 그 비동기 처리 결과값이나, 결과가 정상적으로 끝났는지 확인한다.
+      이제 콜백함수를 직접 만들어보자.
+  - 예제2
+
+    ```jsx
+    function taskA() {
+      console.log("A 작업 끝");
+    }
+
+    taskA();
+    console.log("코드 끝");
+    ```
+
+    지금까지의 동기적 방식으로는 taskA의 함수가 종료되기 전까지는 `console.log`는 실행할 수 없다. 이제 위의 예제를 비동기 방식으로 바꿔보자.
+
+    ```jsx
+    function taskA() {
+      setTimeout(() => {
+        console.log("A TASK END");
+      }, 2000);
+    }
+
+    taskA();
+    console.log("코드 끝");
+    ```
+
+    ![](https://velog.velcdn.com/images/nu11/post/4b58321b-99d3-4bbe-836f-7a8add2e0002/image.png)
+
+    `setTimeout` 내장 비동기 함수를 통해 `console.log("코드 끝")` 이 먼저 출력되고, 이후에 `taskA` 함수의 `console.log("A TASK END")` 가 출력된 것을 확인할 수 있다.
+    즉, 지시 순서는 `taskA() -> console.log("코드 끝")` 이지만 `taskA()` 가 끝날때 까지 기다리지 않고 코드 끝이 출력된 것이다.
+
+    ```jsx
+    function taskA(a, b, cb) {
+      setTimeout(() => {
+        const res = a + b;
+        cb(res);
+      }, 3000);
+    }
+
+    function taskB(a, cb) {
+      setTimeout(() => {
+        const res = a * 2;
+        cb(res);
+      }, 1000);
+    }
+
+    taskA(3, 4, (res) => {
+      console.log("A TASK RESULT : ", res);
+    });
+
+    taskB(7, (res) => {
+      console.log("B TASK RESULT : ", res);
+    });
+
+    console.log("코드 끝");
+    ```
+
+    ![](https://velog.velcdn.com/images/nu11/post/9ea5b825-56a9-4047-abee-a4aa4f3d0fb0/image.png)
+
+    마찬가지로 `taskA()` 가 먼저 호출 되었지만 `taskB()` 가 먼저 출력된 이유는 `taskB` 는 1초 기다리고, `taskA`는 3초 기다리기 때문!
+
+---
