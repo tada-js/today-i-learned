@@ -1,7 +1,5 @@
 # JavaScript 학습 및 복습
 
----
-
 ## React.js
 
 - 리액트가 필요한 이유
