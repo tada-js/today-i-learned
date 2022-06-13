@@ -686,3 +686,85 @@
     마찬가지로 `taskA()` 가 먼저 호출 되었지만 `taskB()` 가 먼저 출력된 이유는 `taskB` 는 1초 기다리고, `taskA`는 3초 기다리기 때문!
 
 ---
+
+## this
+
+- 호출하는 방식에 따른 this
+  - 전역공간에서 this ⇒ 전역 객체를 가리킨다.
+    - window / global ⇒ 자바스크립트가 실행되는 환경에 따라서 전역객체의 정보가 달라진다. 브라우저는 window, node.js는 global
+  - 함수 호출시 this ⇒ 전역 객체를 가리킨다.
+    - window / global ⇒ 이상하다는 의견이 분분하나, 무조건 언제나 전역 객체를 가리킨다.
+  - 메서드로 호출시 this ⇒ 메서드 호출한 주체(메서드명 앞)
+    ```jsx
+    var a = {
+      b: function () {
+        console.log(this);
+      },
+    };
+    a.b();
+    ```
+    `a.b()` 에서 `.` 앞에 있는 `a` 가 `this`가 된다. 그리고 b함수를 a객체의 메서드로서 호출했다. `person['info'].getName()` 같은 대괄호 표기법도 마찬가지다. `person['info']` 까지가 this, `getName()`은 메소드명이 되겠다.
+    - 메서드 내부함수에서의 우회법
+      ```jsx
+      var a = 10;
+      var obj = {
+        a: 20,
+        b: function () {
+          console.log(this.a); // 20
+
+          function c() {
+            console.log(this.a); // 10
+          }
+          c();
+        },
+      };
+      obj.b();
+      ```
+      - 전역 객체의 프로퍼티 a를 달라고 했더니 전역 변수 a를 주는 것이다.
+        즉, window.a ⇒ 전역변수.
+        전역 객체와 전역 변수는 별개의 개념이어야 되는데 실제로는 전역 변수가 곧 전역 객체의 프로퍼티로 동작 하더라는 것이다. 이것도 자바스크립트 설계상 오류라는 지적이 많다.
+      - 그럼 이때 this가 obj를 바라보게끔 하려면 어떻게 해야될까? (this === obj)
+        아쉽게도 call, apply 같은 명시적인 this 바인딩 명령을 쓰지 않고는 this 자체를 직접 다른 값으로 덮어씌울 수는 없다.
+        ES5 call / apply ⇒ `c.call(this)` , `c.apply(this)`
+      - 스코프 체인을 이용해서 방법을 찾아보자.
+        ```jsx
+        var a = 10;
+        var obj = {
+          a: 20,
+          b: function () {
+            var self = this;
+            console.log(this.a); // 20
+
+            function c() {
+              console.log(self.a); // 20
+            }
+            c();
+          },
+        };
+        obj.b();
+        ```
+        - 내부 함수는 자신의 LexicalEnvironment에서 self를 찾는데, 없으니까 outerEnvironmentReference를 타고 외부에 있는 b 함수의 LexicalEnvironment에서 self를 찾는다. 그 self에는 앞서 들어온 this가 담겨 있을 것이고, 이때의 this는 obj.b를 호출할 때의 this니까 obj를 가리키게 되는 것이다.
+        - 하지만 ES6에서는 this를 바인딩 하지 않는 arrow function이 등장하게 되면서 이러한 우회법을 쓸 필요성이 사라졌다. this를 바인딩 하지 않으니까 스코프 체이닝 상의 this에 바로 접근 할 수 있게 된다.
+      - ES6 arrow function
+        ```jsx
+        var a = 10;
+        var obj = {
+          a: 20,
+          b: function () {
+            var self = this;
+            console.log(this.a); // 20
+
+            const c = () => {
+              console.log(this.a); // 20
+            };
+            c();
+          },
+        };
+        obj.b();
+        ```
+        - arrow function은 this를 바인딩 하지 않으니까 상위에 있는 this를 그대로 쓴다.
+  - 콜백 호출시 ⇒ 기본적으로는 함수 내부에서와 동일
+- 메모
+  - ThisBinding은 실행컨텍스트 활성화될 때 한다.
+    - 즉, this가 함수가 호출될 때 비로소 결정되는 것이다.
+    - 호출하는 방식에 따라 다르다 ⇒ 동적으로 바인딩 된다.
