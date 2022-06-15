@@ -13,6 +13,14 @@
     - 선언형 프로그래밍 ⇒ 그냥 목적을 바로 말함
       - React
   - Virtual DOM
+- **리액트를 쓰는 이유**
+  - Single Page Applicatiojn 만들때 쓴다.
+    - 자바스크립트로도 가능하나 코드가 길고 복잡해진다.
+  - React 쓰면 html 재사용 편리
+  - 같은 문법으로 앱개발 가능
+- **js 파일에 html 짜도 웹페이지가 구현되네?**
+  - `App.js`에 있던 html들을 `index.html` 이라는 메인페이지로 처리해주기 때문
+    아마 `index,.js` 가 처리해줌
 - React App을 만드는 방법
   - React.js
     - Node 기반의 JavaScript UI 라이브러리
@@ -29,6 +37,18 @@
   - React App은 Node.js 기반의 웹 서버 위에서 동작하고 있다.
 
 ## JSX
+
+- **JSX 문법**
+
+  - class 넣을 땐 `className`
+  - 변수넣을 땐 `{중괄호}`
+    - 변수에 있던걸 html에 꽂아넣는 작업 ⇒ 데이터바인딩 이라고 함
+    - 실무에서 이런 식으로 작업함.
+      ex) 서버에서 데이터 가져와서 `<html>` 사이에 넣어주세요~
+  - style 넣을 땐 `style={ {스타일명: "값"} }`
+    - css 파일 열기 귀찮을 때 쓰면 된다.
+    - font-size처럼 속성명에 대쉬기호를 쓸 수 없다.
+      camelCase 작성
 
 - React.Fragment
 
@@ -153,10 +173,62 @@
 
 ## State(상태)
 
-- State
+- **State**
+
   - State(상태)만으로 React가 거의 설명되는 중요한 개념이다.
   - 계속해서 변화하는 특정상태
   - 상태에 따라 각각 다른 동작을 함
+  - 자료를 잠깐 저장할 때는 변수를 사용한다.
+    `let post = "강남 우동 맛집";`
+  - 리액트에서는 자료를 잠깐 저장하고 싶다? 그러면 State를 써도 된다.
+  - 만드는 법
+
+    1. `import { useState }`
+    2. `useState(보관할 자료)`
+    3. `let [작명, 작명]`
+       ⇒ `let [a, b] = useState("강남 우동 맛집");`
+       a에는 state에 보관했던 자료 나옴 ⇒ `<h4> {a} </h4>`
+       b에는 state 변경 도와주는 함수
+
+    - Destructuring 문법
+
+      ```jsx
+      let num = [1, 2];
+      let [a, b] = [1, 2];
+      // let a = num[0];
+      // let b = num[1];
+
+      // let [a, b] = useState("강남 우동 맛집");
+      ```
+
+  - 왜 State를 쓸까?
+    - 일반 변수는 갑자기 변경되면 html에 자동으로 반영이 안된다.
+    - state는 갑자기 변경되면 state를 쓰던 html은 **자동 재렌더링**이 된다.
+    - 즉, 변동시 자동으로 html에 반영되게 만들고 싶으면 state 쓰자!
+  - State 변경하는 방법
+    - `state변경함수(새로운state)` ⇒ `onClick={() => {따봉변경(따봉 + 1);}}`
+    - `따봉 = 따봉 +1` 처럼 등호로 변경 금지
+  - State변경함수 특징
+    - 기존state == 신규state의 경우 변경을 안함.
+  - array/object 특징
+    - array/object 담은 변수에는 화살표만 저장된다.
+      - `let arr = [1,2,3]` 의 경우 `[1,2,3]` 이 어디에 있는지 알려주는 화살표만 변수에 저장된다.
+      - `arr[0] = 100` 의 경우에는 array를 수정한 것이고 변수에 있던 화살표는 수정이 안된다.
+        ```jsx
+        // arr와 copy에는 같은 화살표를 가짐
+        let arr = [1, 2, 3];
+        let copy = arr;
+        console.log(copy === arr); // true
+        ```
+        ```jsx
+        // [...]을 통해 arr와 copy는 다른 화살표를 가짐
+        let arr = [1, 2, 3];
+        let copy = [...arr];
+        console.log(copy === arr); // false
+        ```
+      - 즉, state가 array/object면 `[...]` 을 사용해서 독립적 카피본을 만들어 수정해야 한다.
+      - `[...]` 의 점 3개는 뭐냐면 spread operator 문법이라고 괄호를 벗겨주는 연산자다. array나 object 자료형을 복사할 때 많이 사용한다.
+
 - useState
 
   - State는 리액트의 기능이기 때문에 useState 메서드를 import 해줘야 된다.
@@ -194,6 +266,76 @@
   - React는 여러 개의 State를 하나의 컴포넌트가 가져도 문제가 되지 않는다.
   - State는 매우 짧은 코드와 유연한 문법으로 화면에 나타나는 데이터를 쉽게 교체하고 업데이트 할 수 있도록 도와준다.
   - State를 잘 활용하면 이벤트 동작을 다루는데 도움이 된다.
+
+## 컴포넌트
+
+- **컴포넌트 만드는 방법**
+
+  1. 다른 함수 바깥에 function 만들고 네이밍은 PascalCase로 한다.
+  2. return() 안에 html 담기
+     return() 내부 최상위 루트에는 태그 하나만 사용(병렬 사용 못함)
+  3. <함수명></함수명> 쓰기. <함수명 />도 가능.
+
+     ```jsx
+     // Modal 컴포넌트
+     function Modal() {
+       return (
+         <div className="modal">
+           <h4>제목</h4>
+           <p>날짜</p>
+           <p>상세내용</p>
+         </div>
+         // <div>이렇게 최상위 루트에 병렬 사용 못함</div>
+       );
+     }
+     ```
+
+  4. arrow function도 사용 가능하다.
+
+     ```jsx
+     function Modal() {
+       return <div></div>;
+     }
+
+     const Modal = () => {
+       return <div></div>;
+     };
+     ```
+
+- **어떤걸 컴포넌트로 만들면 좋은가?**
+
+  - 기준은 없다. 함수 문법과 마찬가지다.
+    함수 문법을 언제 쓰는가? 긴 코드 축약, 코드 재사용, 복잡한 코드를 작은 기능으로 나눌 때 쓰는데 컴포넌트도 마찬가지다.
+  - 사이트에 반복해서 출현하는 HTML 덩어리들 ⇒ 반복적인 HTML 축약할 때
+  - 내용이 자주 변경될 것 같은 HTML 부분을 잘라서 컴포넌트화
+  - 다른 페이지를 만들고 싶다면 그 페이지의 HTM 내용을 하나의 컴포넌트화
+  - 큰 페이지들
+  - 다른 팀원과 협업할 때 웹페이지를 컴포넌트 단위로 나눠서 작업하기도 함.
+
+- **컴포넌트의 단점**
+  - state 가져다쓸 때 문제가 생긴다.
+    - A 함수에 있던 변수는 B 함수에서 쓸 수 없기 때문.
+- **동적인 UI 만드는 step**
+
+  1. html, css로 미리 디자인 완성
+
+     ```jsx
+     function Modal() {
+       return (
+         <div className="modal">
+           <h4>제목</h4>
+           <p>날짜</p>
+           <p>상세내용</p>
+         </div>
+       );
+     }
+     ```
+
+  2. UI의 현재 상태를 state로 저장
+     1. `let [modal, setModal] = useState(true);`
+        true, false, “열림”, “닫힘” 등..
+        형식은 자유, 모달창 상태 표현만 가능하면 된다.
+  3. state에 따라 UI가 어떻게 보일지 저장(조건문 등으로)
 
 ## Props
 
@@ -408,11 +550,23 @@ export default App;
     - `toLocaleString()` 사용
       ![](https://velog.velcdn.com/images/nu11/post/840c7d3c-949e-44f7-9bd6-664899c1a1a8/image.png)
 
-  ***
-
 ## 데이터 추가하기
 
 ![](https://velog.velcdn.com/images/nu11/post/790e5813-cc04-409b-99e7-1e850e0f3444/image.png)
 
 - 메모
   - React는 단방향으로만 데이터가 흐른다.
+
+## 메모
+
+- node_modules 폴더
+  - 라이브러리 코드 보관함
+- public 폴더
+  - static 파일 모아놓는 곳
+- src 폴더
+  - 코드 짜는 곳(소스코드 보관함)
+- package.json
+  - 프로젝트 정보
+- `/** eslint-disable **/`
+  - Lint 끄는 기능(Warning 메시지)
+- array/object 다룰 때 원본은 보존하는게 좋음
