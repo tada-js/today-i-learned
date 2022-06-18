@@ -261,6 +261,69 @@
     export default Counter;
     ```
 
+- 부모 → 자식 state 전송하는 방법
+
+1. <자식컴포넌트 작명={state 이름}>
+2. props 매개변수 등록 후 props.작명 사용
+3. props 전송은 부모 → 자식만 가능
+
+```jsx
+function App() {
+  return (
+    {modal === true ? <Modal 글제목={글제목} /> : null};
+  );
+}
+
+function Modal(props) {
+  return (
+    <div className="modal">
+      <h4>{props.글제목}</h4>
+      <p>날짜</p>
+      <p>상세내용</p>
+    </div>
+  );
+}
+```
+
+- `<input />`에 뭔가 입력시 코드 실행하고 싶으면?
+
+- onChange / onInput
+
+- 아래 코드에서 `<span>`을 눌러도 왜 모달창이 뜨는가?
+
+```jsx
+{
+  글제목.map(function (a, i) {
+    return (
+      <div className="list">
+        <h4
+          onClick={() => {
+            setModal(true);
+            setTitle(i);
+          }}
+        >
+          {글제목[i]}
+          <span
+            onClick={() => {
+              let copy = [...따봉];
+              copy[i] = copy[i] + 1;
+              따봉변경(copy);
+            }}
+          >
+            👍
+          </span>
+          {따봉}
+        </h4>
+        <p>2월 17일 발행</p>
+      </div>
+    );
+  });
+}
+```
+
+클릭이벤트는 상위 html로 퍼지는 이벤트 버블링 때문이다.
+상위 html로 퍼지는이벤트 버블링을 막고 싶으면 `e.stopPropagation()` 을 추가하면 된다.
+
 - 메모
   - React에서는 어떤 컴포넌트가 가진 State가 바뀌면 그 컴포넌트가 리렌더 된다.
   - React는 여러 개의 State를 하나의 컴포넌트가 가져도 문제가 되지 않는다.
@@ -337,6 +400,12 @@
         형식은 자유, 모달창 상태 표현만 가능하면 된다.
   3. state에 따라 UI가 어떻게 보일지 저장(조건문 등으로)
 
+- map() 기능
+
+  - array 자료 갯수만큼 함수안의 코드 실행해줌
+  - 함수의 파라미터는 array안에 있던 자료임
+  - return에 뭐 적으면 array에 담아준다.
+
 ## Props
 
 - 컴포넌트에 데이터를 전달하는 방법
@@ -383,7 +452,11 @@ export default Counter;
 // Container.js
 
 const Container = ({ children }) => {
-  return <div style={{ margin: 20, padding: 20, border: "1px solid gray" }}>{children}</div>;
+  return (
+    <div style={{ margin: 20, padding: 20, border: "1px solid gray" }}>
+      {children}
+    </div>
+  );
 };
 
 export default Container;
@@ -462,13 +535,27 @@ export default App;
       <div className="DiaryEditor">
         <h2>오늘의 일기</h2>
         <div>
-          <input ref={authorInput} name="author" value={state.author} onChange={handleChangeState} />
+          <input
+            ref={authorInput}
+            name="author"
+            value={state.author}
+            onChange={handleChangeState}
+          />
         </div>
         <div>
-          <textarea ref={contentInput} name="content" value={state.content} onChange={handleChangeState} />
+          <textarea
+            ref={contentInput}
+            name="content"
+            value={state.content}
+            onChange={handleChangeState}
+          />
         </div>
         <div>
-          <select name="emotion" value={state.emotion} onChange={handleChangeState}>
+          <select
+            name="emotion"
+            value={state.emotion}
+            onChange={handleChangeState}
+          >
             <option value={1}>1</option>
             <option value={2}>2</option>
             <option value={3}>3</option>
