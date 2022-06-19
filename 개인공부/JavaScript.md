@@ -1,5 +1,7 @@
 # JavaScript 학습 및 복습
 
+<br>
+
 ## 실행 컨텍스트(execution context)
 
 - Execution ⇒ 실행, Context ⇒ 문맥/맥락/환경
@@ -159,6 +161,8 @@
         가 있다.
 - 메모
   - 자바스크립트는 오직 함수에 의해서만 컨텍스트를 구분할 수 있다
+
+<br>
 
 ## 자료형, 표기법, 배열 메소드
 
@@ -425,6 +429,8 @@
 
   - join(문자열 하나로 합쳐짐)
 
+<br>
+
 ## Truthy & Falsy
 
 - Truthy
@@ -517,6 +523,8 @@
   console.log(name);
   ```
 
+  <br>
+
 ## 데이터 타입
 
 - 스택 메모리
@@ -540,6 +548,8 @@
   - 기본형의 값을 바꿨을 때는 바로 바뀐다
   - 참조형에 있는 값을 바꿨을 때는 여전히 똑같은 객체를 바라보고 있다
   - 메모리 구조 공간에는 값이 하나씩 밖에 못 들어간다
+
+<br>
 
 ## 비동기, 동기
 
@@ -675,6 +685,8 @@
 
     마찬가지로 `taskA()` 가 먼저 호출 되었지만 `taskB()` 가 먼저 출력된 이유는 `taskB` 는 1초 기다리고, `taskA`는 3초 기다리기 때문!
 
+<br>
+
 ## this
 
 - 호출하는 방식에 따른 this
@@ -770,6 +782,8 @@
     - 즉, this가 함수가 호출될 때 비로소 결정되는 것이다.
     - 호출하는 방식에 따라 다르다 ⇒ 동적으로 바인딩 된다.
 
+<br>
+
 ## 브라우저
 
 - 브라우저는 자바스크립트 실행해주는 친구들
@@ -779,6 +793,8 @@
     왜 대기실에서 스택으로 바로 옮기지 않고 Queue라는 곳을 거치냐면, 스택은 매우 바쁜 공간이기 때문이다. - 스택에서 처리하는데 엄청 오래 걸리는 코드가 있다면 대기실에 있는 코드들은 계속 대기중이기 때문에 작동하지 않는다. 예를 들어, 버튼을 클릭하면 모달창이 출력되는 이벤트 리스너가 있다면 엄청 오래 걸리는 코드가 스택에서 실행이 끝날 때까지 작동하지 않는다. ⇒ 브라우저 프리징 원인이 되기도 한다. - 교훈 1. stack을 바쁘게 하지말자. 2. queue를 바쁘게 하지말자.
   - 힙(Heap)
     `i = {name: “Kim”}`
+
+<br>
 
 ## 동기 / 비동기
 
@@ -888,3 +904,130 @@ var 프로미스 = new Promise(function (성공, 실패) {
   - 성공 ⇒ resolved
   - 판정 대기중 ⇒ pending
   - 실패 ⇒ rejected
+
+<br>
+
+## 전개 연산자
+
+ECMAScript6(2015)에서 새로 추가된 전개 연산자(Spread Operator)란 객체나 배열의 값을 하나 하나 넘기는 용도로 사용할 수 있다. 전재 연산자를 사용하는 방법은 점 세개 `...` 를 붙이면 된다.
+
+> 예제1
+
+```jsx
+const fruits = ["Apple", "Banana", "Cherry"];
+console.log(fruits);
+console.log(...fruits);
+// console.log('Apple', 'Banana', 'Cherry')
+
+function toObject(a, b, c) {
+  return {
+    a: a,
+    b: b,
+    c: c,
+  };
+}
+console.log(toObject(...fruits));
+```
+
+![](https://velog.velcdn.com/images/nu11/post/27f4468b-3fed-419d-8a09-37424516d0d2/image.png)
+
+`console.log(...fruits)` 와 같이 작성한 것을 전개 연산자 라고 한다. 이는 `console.log('Apple', 'Banana', 'Cherry')` 와 같은 출력 결과를 나타낸다.
+
+그렇다면 전개 연산자를 사용해서 어떻게 활용할 수 있는지 아래의 `예제2` 를 통해서 살펴보자.
+
+> 예제2
+
+```jsx
+const fruits = ["Apple", "Banana", "Cherry"];
+
+function toObject(a, b, c) {
+  return {
+    a: a,
+    b: b,
+    c: c,
+  };
+}
+console.log(toObject(...fruits));
+```
+
+![](https://velog.velcdn.com/images/nu11/post/ff04d549-0b4b-4634-a484-e7e02ce89c56/image.png)
+
+함수 `toObject` 는 객체 데이터로 변환해주는 함수라는 뜻을 가지고 있는데 매개변수로는 `a, b, c` 3개가 있다. 그리고 그 매개변수를 `toobject` 함수 내부 로직에서 사용하고 있다. 내부 로직으로는`return` 키워드를 통해서 어떤 객체 데이터를 반환하고 있다. 객체 데이터는 `a: a` `b: b` `c: c` 라는 속성을 매개변수에서 받아오고 있다. 그리고 `console.log(toObject(...fruits))` 로 `toObject` 함수를 실행하고 있는데 `...` 전개 연산자를 사용해서 `fruits` 배열 데이터를 전개하고 있다. 따라서 쉼표로 구분되어져 있는 각각의 아이템으로 전개돼서 들어가진다. 매개변수 `a` 에는 `'Apple'`, `b` 에는 `'Banana'` , `c` 에는 `'Cherry'` 가 인수로 들어가게 된다.
+
+> 예제3
+
+```jsx
+console.log(toObject(...fruits));
+// expected output: {a: 'Apple', b: 'Banana', c: 'Cherry'}
+console.log(toObject(fruits[0], fruits[1], fruits[2]));
+// expected output: {a: 'Apple', b: 'Banana', c: 'Cherry'}
+```
+
+만약 전개 연산자를 사용하지 않는다면?
+
+`console.log(toObject(fruits[0], fruits[1], fruits[2]))` 처럼 하나씩 수동으로 인덱스 번호를 넣어줘야 된다. 하지만 아이템 개수가 3개가 아닌 10개, 100개, 1000개로 늘어나게 된다면? 모두 수동으로 인덱스 번호를 넣어줘야 되기 때문에 비효율적이다.
+
+> 예제4
+
+```jsx
+const fruits = ["Apple", "Banana", "Cherry", "Orange"];
+
+function toObject(a, b, c) {
+  return {
+    a: a,
+    b: b,
+    c: c,
+  };
+}
+console.log(toObject(...fruits));
+```
+
+`fruits` 배열 데이터에 `Orange` 아이템을 하나 추가하면 아이템의 개수는 총 4개가 된다. 하지만 `toObject` 함수의 매개변수는 `a, b, c` 총 3개이므로 `Orange` 를 받아줄 매개변수는 없는 상태다. 따라서 `Orange` 는 출력하지 못한다.
+
+![](https://velog.velcdn.com/images/nu11/post/7d6b3826-4511-4445-9f2a-d57085aa3c37/image.png)
+
+> 예제5 (rest parameter)
+
+```jsx
+const fruits = ["Apple", "Banana", "Cherry", "Orange"];
+
+function toObject(a, b, ...c) {
+  return {
+    a: a,
+    b: b,
+    c: c,
+  };
+}
+console.log(toObject(...fruits));
+```
+
+![](https://velog.velcdn.com/images/nu11/post/7d004c04-97cc-4d50-b55d-5f1a7824363a/image.png)
+
+위의 예제처럼 `function toObject(a, b, ...c)` 와 같이 작성하는 것을 **rest parameter(나머지 매개변수)**라고 부른다. `'Apple'` 은 `a`
+
+`'Banana'` 는 `b` 에 들어가게 되고 그 외 나머지 `'Cherry'` 와 `'Orange'` 는 모두 `c` 에 들어가게 된다.
+
+> 예제6 (축약형으로 정리)
+
+```jsx
+const fruits = ["Apple", "Banana", "Cherry", "Orange"];
+
+function toObject(a, b, ...c) {
+  return { a, b, c };
+}
+console.log(toObject(...fruits));
+```
+
+속성의 이름 `a:` 과 데이터의 이름 `a` 이 같으면 축약형으로 하나만 작성해도 된다.
+
+> 예제7(화살표 함수로 정리)
+
+```jsx
+const fruits = ["Apple", "Banana", "Cherry", "Orange"];
+
+const toObject = (a, b, ...c) => ({ a, b, c });
+
+console.log(toObject(...fruits));
+```
+
+객체 데이터를 사용할 때는 중괄호 `{}`를 사용하는데 중괄호는 화살표 함수 `=>` 에서 함수의 범위를 나타내는 블럭으로 해석이 된다. 그렇기 때문에 소괄호 `()` 를 사용해서 객체 데이터를 정의해주자. `({a, b, c})`
