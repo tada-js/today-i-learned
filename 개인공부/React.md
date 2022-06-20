@@ -507,7 +507,7 @@ function Modal(props) {
 <br>
 
 - map() 기능
-  - array 자료 갯수만큼 함수안의 코드 실행해줌
+  - array 자료 개수만큼 함수안의 코드 실행해줌
   - 함수의 파라미터는 array안에 있던 자료임
   - return에 뭐 적으면 array에 담아준다.
 
