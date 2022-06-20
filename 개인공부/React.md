@@ -13,14 +13,23 @@
     - 선언형 프로그래밍 ⇒ 그냥 목적을 바로 말함
       - React
   - Virtual DOM
-- **리액트를 쓰는 이유**
+
+<br>
+
+- 리액트를 쓰는 이유
   - Single Page Applicatiojn 만들때 쓴다.
     - 자바스크립트로도 가능하나 코드가 길고 복잡해진다.
   - React 쓰면 html 재사용 편리
   - 같은 문법으로 앱개발 가능
-- **js 파일에 html 짜도 웹페이지가 구현되네?**
+
+<br>
+
+- js 파일에 html 짜도 웹페이지가 구현되네?
   - `App.js`에 있던 html들을 `index.html` 이라는 메인페이지로 처리해주기 때문
     아마 `index,.js` 가 처리해줌
+
+<br>
+
 - React App을 만드는 방법
   - React.js
     - Node 기반의 JavaScript UI 라이브러리
@@ -33,12 +42,18 @@
     - 이미 세팅 완료된 패키지
     - 마치 보일러를 찍어내듯, 서비스를 개발할 수 있는 빵 틀의 역할을 하는 패키지를 의미함
     - `npx create-react-app "프로젝트명"`
+
+<br>
+
 - 메모
   - React App은 Node.js 기반의 웹 서버 위에서 동작하고 있다.
 
+<br>
+<br>
+
 ## JSX
 
-- **JSX 문법**
+- JSX 문법
 
   - class 넣을 땐 `className`
   - 변수넣을 땐 `{중괄호}`
@@ -49,6 +64,64 @@
     - css 파일 열기 귀찮을 때 쓰면 된다.
     - font-size처럼 속성명에 대쉬기호를 쓸 수 없다.
       camelCase 작성
+
+<br>
+
+- JSX 사용했을 때와 사용하지 않았을 때 비교
+  - JSX 사용
+    ```jsx
+    <div>Hello, {name}</div>
+    ```
+  - JSX 사용 안함
+    ```jsx
+    React.createElement("div", null, `Hello, ${name}`);
+    ```
+
+<br>
+
+- 태그의 속성(attribute)에 값을 넣는 방법
+
+  ```jsx
+  // 큰따옴표 사이에 문자열을 넣거나
+  const element = <div tabIndex="0"></div>;
+
+  // 중괄호 사이에 자바스크립트 코드를 넣으면 됨
+  const element = <img src={user.avatarUrl}></img>;
+  ```
+
+<br>
+
+- 자식(children)을 정의하는 방법
+  ```jsx
+  const element = (
+    <div>
+      <h1>리액트</h1>
+      <h2>공부 중입니다</h2>
+    </div>
+  );
+  ```
+  이처럼 JSX 문법은 가독성이 높으며, 간결하고 직관적이다.
+
+<br>
+
+- Injection Attacks 방어
+
+  - Injection Attacks는 입력창에 숫자나 문자같은 값이 아닌, 소스코드를 입력하여 해당 코드가 실행되게 만드는 해킹 방법이다.
+    - 예를 들어 아이디를 입력하는 공간에 자바스크립트 코드를 넣었는데 그 코드가 그대로 실행되어 버리면 큰 문제가 생기게 된다.
+
+  ```jsx
+  const title = response.potentiallyMaliciousInput;
+
+  // 이 코드는 안전합니다.
+  const element = <h1>{title}</h1>;
+  ```
+
+  `title` 이라는 변수에 잠재적 보안 위험 가능성이 있는 코드가 삽입되었다.
+  그리고 그 아래에 나오는 JSX 코드는 괄호를 사용해서 변수 `title`를 삽입, 임베드 하고 있다. 기본적으로 React DOM은 렌더링 하기 전에 임베딩 된 값을 모두 문자열로 변환한다. 때문에 명시적으로 선언되지 않은 값은 괄호 사이에 들어갈 수 없다. 결과적으로 XSS(Cross Site Script) Attack을 방어할 수 있다.
+
+  이처럼 JSX를 사용하면 잠재적인 보안 위협을 줄일 수 있다는 장점이 있다.
+
+<br>
 
 - React.Fragment
 
@@ -75,83 +148,89 @@
     export default App;
     ```
 
+<br>
+
 - CSS
 
-  - 인라인 스타일
+- 인라인 스타일
 
-    ```jsx
-    import React from "react";
-    // import "./App.css";
+  ```jsx
+  import React from "react";
+  // import "./App.css";
 
-    import MyHeader from "./MyHeader";
+  import MyHeader from "./MyHeader";
 
-    function App() {
-      const style = {
-        App: {
-          backgroundColor: "black",
-        },
-        h2: {
-          color: "white",
-        },
-        bold_text: {
-          color: "green",
-        },
-      };
+  function App() {
+    const style = {
+      App: {
+        backgroundColor: "black",
+      },
+      h2: {
+        color: "white",
+      },
+      bold_text: {
+        color: "green",
+      },
+    };
 
-      return (
-        <div style={style.App}>
-          <MyHeader />
-          <h2 style={style.h2}>안녕 리액트</h2>
-          <b style={style.bold_text} id="bold_text">
-            React.js
-          </b>
-        </div>
-      );
-    }
+    return (
+      <div style={style.App}>
+        <MyHeader />
+        <h2 style={style.h2}>안녕 리액트</h2>
+        <b style={style.bold_text} id="bold_text">
+          React.js
+        </b>
+      </div>
+    );
+  }
 
-    export default App;
-    ```
+  export default App;
+  ```
 
-  - css 스타일
+<br>
 
-    ```jsx
-    // App.js
+- css 스타일
 
-    import React from "react";
-    import "./App.css";
+```jsx
+// App.js
 
-    import MyHeader from "./MyHeader";
+import React from "react";
+import "./App.css";
 
-    function App() {
-      return (
-        <div className="App">
-          <MyHeader />
-          <header className="App-header">
-            <h2>안녕 리액트</h2>
-            <b id="bold_text">React.js</b>
-          </header>
-        </div>
-      );
-    }
+import MyHeader from "./MyHeader";
 
-    export default App;
-    ```
+function App() {
+  return (
+    <div className="App">
+      <MyHeader />
+      <header className="App-header">
+        <h2>안녕 리액트</h2>
+        <b id="bold_text">React.js</b>
+      </header>
+    </div>
+  );
+}
 
-    ```css
-    /* App.css */
+export default App;
+```
 
-    .App {
-      background-color: black;
-    }
+```css
+/* App.css */
 
-    h2 {
-      color: white;
-    }
+.App {
+  background-color: black;
+}
 
-    #bold_text {
-      color: green;
-    }
-    ```
+h2 {
+  color: white;
+}
+
+#bold_text {
+  color: green;
+}
+```
+
+<br>
 
 - 조건부 렌더링
 
@@ -165,15 +244,20 @@
     }
     ```
 
+<br>
+
 - 메모
   - 최상위 컴포넌트를 통상 `<App />` 으로 둔다.
   - 모든 태그는 닫힘 태그 사용
   - JSX에서는 `class` 라는 이름은 자바스크립트 예약어이기 때문에 사용할 수 없다.
     따라서 `className`을 사용한다.
 
+<br>  
+<br>
+
 ## State(상태)
 
-- **State**
+- State
 
   - State(상태)만으로 React가 거의 설명되는 중요한 개념이다.
   - 계속해서 변화하는 특정상태
@@ -229,6 +313,8 @@
       - 즉, state가 array/object면 `[...]` 을 사용해서 독립적 카피본을 만들어 수정해야 한다.
       - `[...]` 의 점 3개는 뭐냐면 spread operator 문법이라고 괄호를 벗겨주는 연산자다. array나 object 자료형을 복사할 때 많이 사용한다.
 
+<br>
+
 - useState
 
   - State는 리액트의 기능이기 때문에 useState 메서드를 import 해줘야 된다.
@@ -261,6 +347,8 @@
     export default Counter;
     ```
 
+<br>
+
 - 부모 → 자식 state 전송하는 방법
 
 1. <자식컴포넌트 작명={state 이름}>
@@ -286,9 +374,7 @@ function Modal(props) {
 ```
 
 - `<input />`에 뭔가 입력시 코드 실행하고 싶으면?
-
-- onChange / onInput
-
+  - onChange / onInput
 - 아래 코드에서 `<span>`을 눌러도 왜 모달창이 뜨는가?
 
 ```jsx
@@ -324,15 +410,26 @@ function Modal(props) {
 클릭이벤트는 상위 html로 퍼지는 이벤트 버블링 때문이다.
 상위 html로 퍼지는이벤트 버블링을 막고 싶으면 `e.stopPropagation()` 을 추가하면 된다.
 
+<br>
+
 - 메모
   - React에서는 어떤 컴포넌트가 가진 State가 바뀌면 그 컴포넌트가 리렌더 된다.
   - React는 여러 개의 State를 하나의 컴포넌트가 가져도 문제가 되지 않는다.
   - State는 매우 짧은 코드와 유연한 문법으로 화면에 나타나는 데이터를 쉽게 교체하고 업데이트 할 수 있도록 도와준다.
   - State를 잘 활용하면 이벤트 동작을 다루는데 도움이 된다.
 
+<br>
+<br>
+
 ## 컴포넌트
 
-- **컴포넌트 만드는 방법**
+- 리액트 컴포넌트
+  - 입력 => React component => 출력
+  - Props => React component => React element
+
+<br>
+
+- 컴포넌트 만드는 방법
 
   1. 다른 함수 바깥에 function 만들고 네이밍은 PascalCase로 한다.
   2. return() 안에 html 담기
@@ -365,7 +462,9 @@ function Modal(props) {
      };
      ```
 
-- **어떤걸 컴포넌트로 만들면 좋은가?**
+<br>
+
+- 어떤걸 컴포넌트로 만들면 좋은가?
 
   - 기준은 없다. 함수 문법과 마찬가지다.
     함수 문법을 언제 쓰는가? 긴 코드 축약, 코드 재사용, 복잡한 코드를 작은 기능으로 나눌 때 쓰는데 컴포넌트도 마찬가지다.
@@ -375,10 +474,15 @@ function Modal(props) {
   - 큰 페이지들
   - 다른 팀원과 협업할 때 웹페이지를 컴포넌트 단위로 나눠서 작업하기도 함.
 
-- **컴포넌트의 단점**
+<br>
+
+- 컴포넌트의 단점
   - state 가져다쓸 때 문제가 생긴다.
     - A 함수에 있던 변수는 B 함수에서 쓸 수 없기 때문.
-- **동적인 UI 만드는 step**
+
+<br>
+
+- 동적인 UI 만드는 step
 
   1. html, css로 미리 디자인 완성
 
@@ -395,18 +499,32 @@ function Modal(props) {
      ```
 
   2. UI의 현재 상태를 state로 저장
-     1. `let [modal, setModal] = useState(true);`
-        true, false, “열림”, “닫힘” 등..
-        형식은 자유, 모달창 상태 표현만 가능하면 된다.
+     - `let [modal, setModal] = useState(true);`
+       true, false, “열림”, “닫힘” 등..
+       형식은 자유, 모달창 상태 표현만 가능하면 된다.
   3. state에 따라 UI가 어떻게 보일지 저장(조건문 등으로)
 
-- map() 기능
+<br>
 
+- map() 기능
   - array 자료 갯수만큼 함수안의 코드 실행해줌
   - 함수의 파라미터는 array안에 있던 자료임
   - return에 뭐 적으면 array에 담아준다.
 
+<br>
+<br>
+
 ## Props
+
+- Props는 컴포넌트에 전달할 다양한 정보를 담고 있는 자바스크립트 객체다.
+
+  - Component(붕어빵 틀)
+    - Props 팥
+      - 팥 붕어빵(Element)
+    - Props 슈크림
+      - 슈크림 붕어빵(Element)
+    - Props 고구마
+      - 고구마 붕어빵(Element)
 
 - 컴포넌트에 데이터를 전달하는 방법
 - 리액트의 컴포넌트는 본인이 관리하고 본인이 가진 state가 바뀔 때마다 리렌더가 되고,
@@ -495,6 +613,9 @@ function App() {
 export default App;
 ```
 
+<br>
+<br>
+
 ## useRef
 
 - HTML DOM 요소에 접근할 수 있는 React의 기능인 useRef
@@ -577,11 +698,17 @@ export default App;
 `content` 가 글자수가 5글자 이하일 때 `content` 영역이 `focus` 된다.
 `alert` 으로 “5글자 이상 입력”으로 나타내는 건 UX경험으로 좋지 않기 때문에 이와 같은 방식을 사용하자.
 
+<br>
+<br>
+
 ## 리스트 렌더링(조회)
 
 - React에서 리스트 사용하기
   - `Array.map((it)⇒<Component key={it.id}{…it}/>)`
   - React에서 배열은 게시글이나 리스트, 피드를 표시하는데 자주 사용된다.
+
+<br>
+
 - 메모
 
   - 렌더링 ⇒ 화면에 표시한다.
@@ -637,12 +764,18 @@ export default App;
     - `toLocaleString()` 사용
       ![](https://velog.velcdn.com/images/nu11/post/840c7d3c-949e-44f7-9bd6-664899c1a1a8/image.png)
 
+<br>
+<br>
+
 ## 데이터 추가하기
 
 ![](https://velog.velcdn.com/images/nu11/post/790e5813-cc04-409b-99e7-1e850e0f3444/image.png)
 
 - 메모
   - React는 단방향으로만 데이터가 흐른다.
+
+<br>
+<br>
 
 ## 메모
 
