@@ -1,4 +1,4 @@
-# JavaScript 학습 및 복습
+# React 학습 및 복습
 
 ## React.js
 
