@@ -1276,3 +1276,146 @@ export default 123;
 1. `getRandom.js` 파일 내용으로는 하나의 데이터만 내보낼 수 있는 기본 통로인 `default export` 와 여러개의 데이터를 내보낼 수 있는 `named export` 가 같이 작성되어져 있다.
 2. 혼용해서 작성되었음에도 결과를 보면 문제 없음을 알 수 있다.
 3. 결국에는 하나의 자바스크립트 파일에서 두 개의 `export` 를 모두 사용할 수 있기 때문에 굳이 하나만 고집할 필요는 없다.
+
+<br>
+
+## JSON
+
+### JSON(제이슨, JavaScript Object Notation)
+
+- 자바스크립트 데이터를 표현하는 하나의 포맷.
+- 속성-값 쌍. 혹은 key-value
+- 사람이 읽을 수 있는 텍스트를 사용하는 개방형 표준 포맷.
+- 비동기 브라우저/서버 통신에서 사용됨.
+- 예전에 많이 사용하던 `XML` 을 대체하는 주요 데이터 포맷.
+- 인터넷에서 데이터를 주고 받을 때 그 데이터를 표현하는 방법.
+- 컴퓨터 프로그램의 변수값을 표현하는데 적합하다.
+- `JSON` 의 공식 인터넷 미디어 타입은 `application/json` 이며, `JSON` 의 파일 확장자는 `.json` 이다.
+
+<br>
+
+### JSON 자료형
+
+- 수(Number)
+- 문자열(String): **문자열은 큰 따옴표 `"` 로 구분**하며 역슬래시 이스케이프 문법을 지원한다.
+- 참/거짓(Boolean): `true` 또는 `false` 값
+- 배열(Array): 순서가 있는 리스트이며, 대괄호로 나타내고 요소는 쉼표로 구분한다.
+- 객체(Object): 순서가 없는 이름/값 쌍의 집합으로 이름(키)이 문자열이다.
+- `null`: 빈 값으로, `null`을 사용
+
+<br>
+
+- package.json
+
+  ```jsx
+  {
+    "name": "js-test",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "dev": "parcel index.html",
+      "build": "parcel build index.html"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "lodash": "^4.17.21",
+      "parcel-bundler": "^1.12.5"
+    }
+  }
+  ```
+
+`node.js` 환경에서 `npm` 을 통해서 패키지를 관리하는 프로젝트는 기본적으로 `package.json` 파일이 자동으로 해석이 돼서 프로젝트를 구성할 수 있는 구조가 된다. 그래서 터미널에 `npm init -y` 를 입력하면 자동으로 `package.json` 파일이 만들어진다. 결국 `node.js` 환경에 `npm` 은 `package` 라는 이름에 `.json` 파일로 환경에 구성 옵션을 만들어서 관리하는 것이고 `json` 이라는 것은 하나의 데이터처럼 취급할 수 있기 때문에 구성 옵션을 관리하기가 좋은 `json` 이라는 포맷처럼 관리를 한다는 것이다.
+
+<br>
+
+- 예제1
+
+  ```jsx
+  const user = {
+    name: "userName",
+    age: 85,
+    emails: ["userEmail@gmail.com", "userEmailTwo@gmail.com"],
+  };
+  console.log("user", user);
+
+  const str = JSON.stringify(user);
+  console.log("str", str);
+  console.log(typeof str);
+
+  const obj = JSON.parse(str);
+  console.log("obj", obj);
+  ```
+
+![](https://velog.velcdn.com/images/nu11/post/16838dcc-f615-4b81-9e31-15b120109256/image.jpg)
+
+<br>
+
+- 예제2 (myData.json)
+
+  ```jsx
+  {
+    "string": "MyName",
+    "number": 123,
+    "boolean": true,
+    "null": null,
+    "object": {},
+    "array": []
+  }
+  ```
+
+  `예제2` 를 통해 확인할 수 있듯이 `.json` 파일은 `json` 포맷 안에서 사용할 수 있는 기본 데이터(문자, 숫자..)들을 그대로 명시할 수 있다.
+
+`undefined` 데이터는 사용 불가능!
+`.json` 확장자를 가지고 있는 하나의 파일은 곧 하나의 데이터를 의미한다. 따라서 한 개의 `.json` 파일 안에는 한 개의 데이터만 명시 가능하다. `123 [] false` 처럼 두 개 이상의 데이터는 명시하지 못한다.
+예제의 `myData.json` 파일의 경우에는 객체 데이터 `{}` 하나만 명시되어져 있다.
+그렇다면 `myData.json` 파일을 어떻게 활용하는지 `main.js` 파일로 이동해서 알아보자.
+
+<br>
+
+- 예제3 (main.js)
+
+  ```jsx
+  import myData from "./myData.json";
+
+  console.log(myData);
+  ```
+
+  ![](https://velog.velcdn.com/images/nu11/post/e0b00cf1-d052-41b8-a065-ce80e4397994/image.jpg)
+
+  `.json` 이라는 확장자를 가진 파일은 사실 **하나의 문자 데이터**이다. 객체 데이터처럼 출력이 됐다고 객체 데이터라고 착각하면 안된다. `import` 를 통해 `.json` 이라는 **문자 데이터**를 가지고 오면 기본적인 포맷의 규칙이 있기 때문에 자동으로 변환돼서 실제 객체 데이터처럼 출력이 되는 것이다.
+
+<br>
+
+- 예제4 (main.js)
+
+  ```jsx
+  import myData from "./myData.json";
+
+  console.log(myData);
+
+  const user = {
+    name: "userName",
+    age: 85,
+    emails: ["userEmail@gmail.com", "userEmailTwo@gmail.com"],
+  };
+  console.log("user", user);
+
+  const str = JSON.stringify(user); // JSON은 전역 객체
+  console.log("str", str);
+  console.log(typeof str);
+
+  const obj = JSON.parse(str);
+  console.log("obj", obj);
+  ```
+
+  ![](https://velog.velcdn.com/images/nu11/post/a7082709-11b8-453d-895b-f634bab6c533/image.jpg)
+
+  1. 대문자로 작성된 `JSON` 은 자바스크립트 전체 영역에서 사용할 수 있는 전역 객체다.
+  2. `JSON` 은 사용되는 용도가 명확하기 때문에 최대한 경량화를 하는 구조이며, 단순히 하나의 메모리만을 참조하는 큰 덩어리의 문자 데이터로 관리된다.
+  3. 자바스크립트 데이터를 `JSON` 로 JSON 포맷화, 즉 문자 데이터로 변환 시키는 것은 `JSON.stringify()` 메소드를 사용하면 된다. 따라서 `str` 을 출력해 보면 객체 형태를 가진 문자 데이터로 출력되는 것이다. `typeof` 를 통해 `str` 의 데이터를 확인해 보면 문자 데이터인 `string` 이 출력되는 것을 확인할 수 있다.
+  4. 반대로 `JSON` 파일을 분석하여 재조립, 즉 실제 자바스크립트 데이터로 변환 시키는 것은 `JSON.parese` 메소드를 사용하면 된다. 따라서 `obj` 를 출력해 보면 문자 데이터 `str` 이 다시 객체 데이터로 출력된다.
+
+<br>
