@@ -1085,3 +1085,194 @@ const 오브젝트 = {
 };
 오브젝트.함수();
 ```
+
+<br>
+
+## 가져오기, 내보내기 import export
+
+> 예제1 (import)
+
+```jsx
+import _ from "lodash"; // From `node_modules` !
+import getType from "./getType"; // getType.js
+import getRandom from "./getRandom"; // getRandom.js
+
+console.log(_.camelCase("the hello world"));
+console.log(getType([1, 2, 3]));
+console.log(getRandom(), getRandom());
+```
+
+`import _ from 'lodash'` 코드는 `'lodash'` 라는 패키지를 `install` 해서 그것을 `import` 키워드를 통해 `'node modules'` 폴더에 가지고 와서 `_` 기호로 활용을 하겠다는 선언이다.
+
+> 예제2 (.js 파일 export)
+
+```jsx
+export default function getType(data) {
+  return Object.prototype.toString.call(data).slice(8, -1);
+}
+```
+
+`.js` 자바스크립트 파일은 외부에 있는 `.js` 파일을 `import` 키워드를 통해 가지고 올 수도 있거나 그 파일 내부에서 특정한 내용을 `export` 키워드를 통해 내보낼 수도 있다.
+
+<br>
+
+### 그림으로 이해하기
+
+![](https://velog.velcdn.com/images/nu11/post/ee4f6d5a-592b-4d4a-829d-bba627fbc5ac/image.jpg)
+
+1. 그림에는 `module.js` 파일이 존재한다.
+2. 자바스크립트 파일은 기본적으로 외부에 있는 다른 자바스크립트 파일을 가지고 올 수 있는 **하나의 통로**를 가지고 있다. 대표적으로 `import` 키워드를 통해서 외부에 있는 다른 자바스크립트 파일을 가지고 올 수 있다.
+3. 그리고 자바스크립트 파일은 그 안에 있는 특정 내용을 내보낼 수 있는 두 개의 통로를 가지고 있다.
+   `Default export` : 이름을 따로 지정하지 않아도 되는 기본 통로다. `default` 키워드를 통해 사용할 수 있다.
+   `Named export` : 이름을 지정해야 되는 통로
+
+<br>
+
+### default export
+
+> 예제1 (getType.js)
+
+```jsx
+export default function getType(data) {
+  return Object.prototype.toString.call(data).slice(8, -1);
+}
+```
+
+> 예제2(main.js)
+
+```jsx
+import _ from "lodash"; // From `node_modules` !
+import getType from "./getType"; // getType.js
+import getRandom from "./getRandom"; // getRandom.js
+
+console.log(_.camelCase("the hello world"));
+console.log(getType([1, 2, 3]));
+console.log(getRandom(), getRandom());
+```
+
+1.  `export` 키워드를 통해 내보내기를 할 건데 기본통로인 `Default export` 를 사용할 것이다. 따라서 뒤에 `default` 키워드를 붙여준다.
+2.  `function` 참조형 데이터 함수를 내보내기 할 건데 함수명이 `getType` 으로 지정이 되어져 있지만 `default` 기본 통로로 내보내기를 할 때는 함수명을 지정해주지 않아도 된다. 따라서 `getType` 을 지워도 정상적으로 작동하여 출력하는 것을 확인할 수 있다.
+3.  마찬가지로 기본통로를 빠져나가는 데이터는 따로 이름을 지정하는 것이 아니기 때문에 `main.js` 에서 불러올 때도 굳이 `getType` 으로 작성을 안해도 되고 내가 원하는 이름으로 지정할 수 있다. 예를 들어 `checkType` 으로 변경하고 싶다면 `import checkType` 으로 바꿔도 무방하다. 다만, `from './getType'` 상대경로는 정확하게 작성해야 된다.
+4.  즉, 기본통로 `default` 로 내보내지는 데이터는 이름을 지정하지 않아도 되고 `import` 로 가져올 때는 이름을 수정해도 문제 없다.
+
+<br>
+
+### named export
+
+> 예제1 (getRandom.js)
+
+```jsx
+// getRandom.js
+export function random() {
+  return Math.floor(Math.random() * 10);
+}
+```
+
+> 예제2 (main.js)
+
+```jsx
+// main.js
+import _ from "lodash"; // From `node_modules` !
+import getType from "./getType"; // getType.js
+import { random } from "./getRandom"; // getRandom.js
+
+console.log(_.camelCase("the hello world"));
+console.log(getType([1, 2, 3]));
+console.log(random(), random());
+```
+
+1. `default` 키워드를 사용할 때는 기본 통로로 나오기 때문에 별도의 기호 없이 `import getType` 처럼 작성해도 되지만 이름이 지정된 `named export` 같은 경우에는 `{}` 중괄호 기호를 사용해서 `import { random }` 으로 사용해줘야 된다.
+2. 여기서 기본 통로와 이름을 지정해줘야 되는 통로의 가장 큰 차이점이 나타난다. **기본 통로 `default export` 는 하나의 데이터만 내보낼 수 있지만 이름이 지정된 통로 `named export` 는 여러개의 데이터도 내보낼 수 있다.**
+
+> 예제3 (named export getRandom.js)
+
+```jsx
+// getRandom.js
+export function random() {
+  return Math.floor(Math.random() * 10);
+}
+export const user = {
+  name: "test",
+  age: 85,
+};
+```
+
+> 예제4(main.js)
+
+```jsx
+// main.js
+import _ from "lodash"; // From `node_modules` !
+import getType from "./getType"; // getType.js
+import { random, user } from "./getRandom"; // getRandom.js
+
+console.log(_.camelCase("the hello world"));
+console.log(getType([1, 2, 3]));
+console.log(random(), random());
+console.log(user);
+```
+
+![](https://velog.velcdn.com/images/nu11/post/19f336da-577d-4b8b-9c50-2a499419577e/image.jpg)
+
+`named export` 는 여러개의 데이터를 내보낼 수 있기 때문에 정상적으로 출력된다.
+
+하지만 기본통로인 `default export` 는 어떨까?
+
+> 예제5(default export /getType.js)
+
+```jsx
+// getType.js
+export default function getType(data) {
+    return Object.prototype.toString.call(data).slice(8, -1)
+}
+export default 123
+```
+
+![](https://velog.velcdn.com/images/nu11/post/67292845-716e-444d-b977-298f844ea90a/image.jpg)
+
+기본통로인 `default export` 로 `getType.js` 하나의 파일에서 내보내는 데이터가 2개가 됐더니 `error` 가 발생했다. `error` 를 읽어보면 `Only one default export allowed per module.` 라고 친절하게 설명해준다. 즉, 하나의 모듈에서 하나의 기본 내보내기만 가능하다는 것이다.
+
+<aside>
+💡 자바스크립트 파일에서 하나의 데이터만 내보낼 때는 `default export` 를 사용하고 여러개의 데이터를 내보낼 때는 `named export` 를 사용하자.
+
+</aside>
+
+> 예제6 (\* as export /getRandom.js)
+
+```jsx
+// getRandom.js
+import _ from "lodash"; // From `node_modules` !
+import getType from "./getType"; // getType.js
+// import { random, user } from './getRandom' // getRandom.js
+import * as R from "./getRandom";
+
+console.log(_.camelCase("the hello world"));
+console.log(getType([1, 2, 3]));
+// console.log(random(), random())
+console.log(R);
+```
+
+1. `getRandom.js` 에서 모든 데이터를 한 번에 가져오고 싶다면 어떻게 해야될까?
+2. 애스터리스크 `*` 와 `as` 를 작성하면 된다. `import * as 원하는이름` 으로 작성하자.
+3. 애스터리스크 `*` 를 보통 와일드 카드라고 부른다.
+
+- 와일드카드(Wildcard Character, \*) : 여러 내용을 한꺼번에 지정할 목적으로 사용하는 기호를 가리킨다.
+
+> 예제7 (named export와 default export 혼용 /getRandom.js)
+
+```jsx
+// getRandom.js
+export function random() {
+  return Math.floor(Math.random() * 10);
+}
+export const user = {
+  name: "test",
+  age: 85,
+};
+export default 123;
+```
+
+![](https://velog.velcdn.com/images/nu11/post/72f6ab66-0be3-4afc-8a3e-b9222287980e/image.jpg)
+
+1. `getRandom.js` 파일 내용으로는 하나의 데이터만 내보낼 수 있는 기본 통로인 `default export` 와 여러개의 데이터를 내보낼 수 있는 `named export` 가 같이 작성되어져 있다.
+2. 혼용해서 작성되었음에도 결과를 보면 문제 없음을 알 수 있다.
+3. 결국에는 하나의 자바스크립트 파일에서 두 개의 `export` 를 모두 사용할 수 있기 때문에 굳이 하나만 고집할 필요는 없다.
