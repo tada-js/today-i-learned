@@ -1419,3 +1419,147 @@ export default 123;
   4. 반대로 `JSON` 파일을 분석하여 재조립, 즉 실제 자바스크립트 데이터로 변환 시키는 것은 `JSON.parese` 메소드를 사용하면 된다. 따라서 `obj` 를 출력해 보면 문자 데이터 `str` 이 다시 객체 데이터로 출력된다.
 
 <br>
+
+## 얕은 복사(Shallow copy), 깊은 복사(Deep copy)
+
+- 예제1
+
+  ```jsx
+  const user = {
+    name: "Heropy",
+    age: 85,
+    emails: ["email@gmail.com"],
+  };
+  const copyUser = user;
+  console.log(copyUser === user);
+
+  user.age = 22;
+  console.log("user", user);
+  console.log("copyUser", copyUser);
+  ```
+
+  1. `user` 라는 변수에 객체 데이터가 할당되어 있는데 속성으로는 `name` `age` `emails` 라는 속성을 가지고 있다. 이는 문자, 숫자, 배열 데이터에 해당된다.
+  2. `user` 객체 데이터를 `copyUser` 라는 변수에 할당하고 있다.
+  3. 일치연산자를 통해 `copyUser` 와 `user` 가 일치하는지 확인하고 있는데 결과값은 `true` 를 출력하고 있다. 이는 같은 메모리 주소를 가리키고 있다는 뜻이다.
+  4. 이때 일어날 수 있는 문제를 살펴보면, `user` 의 `age` 속성을 숫자 데이터 `22` 로 바꾸었을때 같은 메모리 주소를 가리키고 있는 `copyUser` 의 `age` 속성 또한 숫자 데이터 `85` 에서 `22` 로 바뀌게 된다.
+  5. 참조형 데이터를 할당 연산자로 다른 변수에 할당할 때는 이런 문제를 야기 시킨다. 이때 이러한 문제를 방지하기 위해서 **복사**라는 개념을 사용할 수 있다.
+
+<br>
+
+- 예제2 (얕은 복사, Shallow copy)
+
+  ```jsx
+  const user = {
+    name: "Heropy",
+    age: 85,
+    emails: ["email@gmail.com"],
+  };
+  const copyUser = Object.assign({}, user);
+  console.log(copyUser === user);
+
+  user.age = 22;
+  console.log("user", user);
+  ```
+
+  1. `const copyUser = Object.assign({}, user)` 부분을 살펴보자.
+     첫 번째 인수로는 빈 객체 데이터 `{}` 를 넣어주고, 두 번째 인수로는 `user` 를 넣어주자. `{}` 는 대상 객체, `user` 는 출처 객체에 해당된다. 출처 객체 `user` 의 속성들을 복사해서 대상 객체 `{}` 에 담아서 `Object.assign()` 메소드를 실행해서 `copyUser` 에 반환한다.
+  2. `{}` 는 리터럴 방식의 객체 데이터고 참조형 데이터이기 때문에 만들어질 때 새로운 메모리 주소를 생성한다. 이는 `copyUser` 가 새로운 메모리 주소에 할당되는 것이므로 `copyUser` 와 `user` 를 일치연산자로 비교해 보면 `false` 를 출력한다. 따라서 `user` 의 `age` 속성을 숫자 데이터 `22` 로 변경해도 `copyUser` 는 별도의 다른 메모리 주소를 가리키고 있으므로 `copyUser` 에는 영향을 미치지 않는다. 이것이 **복사**라는 개념이다.
+  3. `Object.assign()` 뿐만 아니라 전개 연산자 `...` 로도 복사를 할 수 있는데 `const copyUser = {...user}` 로 수정해도 복사된 똑같은 결과를 출력한다.
+
+  #### 💡
+
+  `Object.assign()` , `전개 연산자(...)` 로 복사한 개념은 **얕은 복사(Shallow copy)** 에 해당된다.
+
+<br>
+
+- 예제3 (얕은 복사)
+
+  ```jsx
+  const user = {
+    name: "Heropy",
+    age: 85,
+    emails: ["email@gmail.com"],
+  };
+
+  const copyUser = Object.assign({}, user);
+  console.log(copyUser === user);
+
+  user.age = 22;
+  console.log("user", user);
+  console.log("copyUser", copyUser);
+
+  console.log("-----");
+  console.log("-----");
+
+  user.emails.push("pushEmail@gmail.com");
+  console.log(user.emails === copyUser.emails);
+  // console.log('user', user)
+  // console.log('copyUser', copyUser)
+  ```
+
+  1. `user` 객체의 `emails` 속성의 배열 데이터에 `push()` 메소드를 사용했다. `push()` 메소드는 배열 데이터의 가장 뒷 부분에 새로운 아이템으로 메소드의 인수 부분을 밀어 넣는다.
+  2. 그리고 일치연산자를 사용하여 `user` 의 `emails` 속성과 `copyUser` 의 `emails` 속성을 비교했을때 `true` 라는 값이 출력됐다.
+  3. 분명 얕은 복사(Shallow copy)를 사용해서 새로운 `copyUser` 를 만들었는데 어떻게 `user` 와 `copyUser` 의 `emails` 배열 데이터속성을 비교 했을때 `true` 가 나올 수 있을까? 그 이유는 `user` 는 객체 데이터, `emails` 는 배열 데이터로써 둘 다 **참조형 데이터**이기 때문인데 우리는 `user` 객체 데이터만 복사(겉)를 했을 뿐이어서 그 안에 들어 있는 속성 `emails` 의 배열 데이터는 따로 복사 되지 않고 똑같은 메모리 주소를 공유하고 있기 때문이다.
+  4. 따라서 `user` , `copyUser` 의 `age` 속성은 서로 다른 숫자 데이터를 가지고 있지만 `emails` 배열 데이터 속성은 `['emails@gmail.com', 'pushEmail@gmail.com']` 두 개의 아이템을 가지고 있다. 이는 얕은 복사를 통해 표면(겉)만 복사 되었기 때문이다.
+  5. 이때 필요한 것이 바로 **‘깊은 복사(Deep copy)’** 다. 깊은 복사의 경우에는 순수 자바스크립트로 구현하기가 복잡하다. `lodash` 패키지의 도움을 받아서 구현해 보자.
+
+<br>
+
+### .cloneDeep()
+
+- 예제1 (깊은 복사 Deep copy)
+
+  ```jsx
+  import _ from "lodash";
+
+  const user = {
+    name: "Heropy",
+    age: 85,
+    emails: ["email@gmail.com"],
+  };
+  const copyUser = _.cloneDeep(user);
+  console.log(copyUser === user);
+
+  user.age = 22;
+  console.log("user", user);
+  console.log("copyUser", copyUser);
+
+  console.log("-----");
+  console.log("-----");
+
+  user.emails.push("pushEmail@gmail.com");
+  console.log(user.emails === copyUser.emails);
+  console.log("user", user);
+  console.log("copyUser", copyUser);
+  ```
+
+  1. 터미널에 `$npm i lodash` 를 입력해서 `lodash` 패키지를 설치한다. 이때 `lodash` 패키지는 웹 브라우저에서 직접 동작을 할 수 있어야 하기 때문에 개발 의존성에 해당하는 `-D` 를 붙이지 않는다.
+  2. `main.js` 로 돌아와서 설치된 `lodash` 패키지를 불러오기 위해 최상단에 `import _ from 'lodash'` 를 작성한다. `lodash` 에서 추천하는 방식은 `import lodash` 가 아닌 언더바 기호 `_` 즉, low dash 를 `import` 에 작성하는 것이다. 언더바 기호가 하나의 객체 데이터라고 해석할 수 있다.
+  3. `const copyUser =` 에 `lodash` 기능을 사용할 건데 `_` 기호를 시작으로 `_.cloneDeep()` 메소드를 사용하는데 그 인수로 `user` 객체 데이터를 넣어주면 `const copyUser = _.cloneDeep(user)` **깊은 복사**가 완성된다. `clone` 은 복제, `Deep` 은 깊은 이라는 뜻으로 깊은 복제가 된다.
+  4. 따라서 일치연산자를 통해 `copyUser` 와 `user` 를 비교했을때 `false` 값을 확인할 수 있으며 `user.age = 22` 로 했을때 `user` 는 `22`, `copyUser` 는 `85` 로 되어 있으며 이전과는 다르게 `user.emails.push` 를 했을때 `user.emails === copyUser.emails` 는 `false` 값을 나타낸다. 그 증거로 `user` 와`copyUser` 를 출력해보면 `emails` 의 배열 데이터 아이템 개수는 `push` 된 것을 포함해 2개 이고, `copyUser` 의 `emails` 의 아이템 개수는 1개이다.
+
+  #### 💡
+
+  참조형 데이터를 복사할 때 얕은 복사로도 충분히 문제없이 복사가 된다면 `Object.assing()` , `전개연산자(...)` 를 사용해서 참조형 데이터를 복사해도 된다. 하지만 참조형 데이터가 내부에 또 다른 참조형 데이터를 포함하고 있다면 깊은 복사를 해주는 것이 더 안전한다. 이때 깊은 복사는 순수 자바스크립트로는 구현이 복잡하니 `lodash` 패키지 도움을 받아서 `_.cloneDeep()` 이라는 패키지 내부 메소드를 통해 손쉽게 깊은 복사를 하자.
+
+### \_.cloneDeep(value)
+
+This method is like `_.clone` except that it recursively clones value. `cloneDeep` 메소드는 `Deep` 이 붙어있지 않은 `_.clone` 메소드와 유사한데 정확하게는 재귀적인 적인 값을 복사한다.
+
+> 재귀란 하나의 데이터 안에서 어떠한 내용이 반복적으로 실행되는 것을 의미한다. 쉽게 말해 **반복실행**이다.
+
+즉, `_.cloneDeep()` 메소드는 반복실행 하면서 모든 값들을 복제하면서 깊은 복사가 가능해진다는 것이다.
+
+- 예제1
+
+  ```jsx
+  var objects = [{ a: 1 }, { b: 2 }];
+
+  var deep = _.cloneDeep(objects);
+  console.log(deep[0] === objects[0]);
+  // expected output: false
+  ```
+
+  `objects` 의 참조형 데이터인 `[]` 배열 데이터만 복사한 것이 아닌 그 안에 들어있는 또 다른 참조형 데이터인 객체 데이터 `{}` 까지 모두 복사했다는 것을 알 수 있다.
+
+<br>
