@@ -1563,3 +1563,11 @@ This method is like `_.clone` except that it recursively clones value. `cloneDee
   `objects` 의 참조형 데이터인 `[]` 배열 데이터만 복사한 것이 아닌 그 안에 들어있는 또 다른 참조형 데이터인 객체 데이터 `{}` 까지 모두 복사했다는 것을 알 수 있다.
 
 <br>
+
+## API 호출
+
+- API 호출을 레스토랑으로 비교
+
+  ![](https://velog.velcdn.com/images/nu11/post/7be0d14b-46ca-4d86-9738-54ccae2b9b03/image.PNG)
+
+  ![](https://velog.velcdn.com/images/nu11/post/f9cc768a-a101-4eca-96f2-76821ceb5d26/image.PNG)
