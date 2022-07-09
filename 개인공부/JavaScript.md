@@ -1571,3 +1571,57 @@ This method is like `_.clone` except that it recursively clones value. `cloneDee
   ![](https://velog.velcdn.com/images/nu11/post/7be0d14b-46ca-4d86-9738-54ccae2b9b03/image.PNG)
 
   ![](https://velog.velcdn.com/images/nu11/post/f9cc768a-a101-4eca-96f2-76821ceb5d26/image.PNG)
+
+<br>
+
+## ES2022
+
+> 노마드코더 - 방금 출시된 ⚡️자바스크립트 미친 신기능 4개!
+https://youtu.be/m-R7s7fnwvU
+
+위 영상을 보며 메모한 것을 기록으로 남겨 둡니다.
+
+<br>
+
+### Top Level Await
+
+`await startServer();` 
+await을 async 함수 없이 써도 된다!
+
+<br>
+
+### Error cause
+
+```js
+// 이전
+new Error("오류 메시지")
+
+// ES2022!!!
+new Error("오류 메시지", { cause: "무엇이 잘못되었는지 구체적으로 작성1" });
+new Error("오류 메시지", { cause: "무엇이 잘못되었는지 구체적으로 작성2" });
+```
+덕분에 동일한 오류 메시지를 사용하지만 다른 원인을 작성할 수도 있음!
+`.cause`로 액세스도 가능!
+
+<br>
+
+### .at()
+```js
+const emoji = ["👍", "🎶", "🐙"];
+emoji.at(0); // 👍
+emoji.at(-1); // 🐙
+```
+배열의 모든 인덱스에 액세스 할 수 있음!  `emoji[2]` 로도 접근 가능했으나, `at(-1)` 을 사용하면 뒤로 검색할 수 있음!
+
+<br>
+
+### Class Fields
+자바스크립트가 OOP를 위한 성숙한 언어처럼 느껴지게 만듬! 불가능 했던 Private 메서드 및 속성을 가질 수 있고 static 메서드도 만들 수 있음!
+
+<br>
+
+### ES2022 메모
+`Top Level Await` 이랑 `.at()` 엄청 유용해 보인다!
+특히 배열에서 뒤로 검색할 때는 `emoji[emoji.length -1]` 처럼 사용했었는데 이제 쉽게 접근 가능해서 좋아 보인다!
+
+<br>
