@@ -19,3 +19,4 @@
 - [6장 데이터 타입](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/06_%EB%8D%B0%EC%9D%B4%ED%84%B0_%ED%83%80%EC%9E%85.md)
 - [7장 연산자](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/07_%EC%97%B0%EC%82%B0%EC%9E%90.md)
 - [8장 제어문](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/08_%EC%A0%9C%EC%96%B4%EB%AC%B8.md)
+- [9장 타입 변환과 단축 평가](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/09_%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC_%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md)
