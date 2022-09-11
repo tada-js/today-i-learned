@@ -20,3 +20,4 @@
 - [7장 연산자](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/07_%EC%97%B0%EC%82%B0%EC%9E%90.md)
 - [8장 제어문](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/08_%EC%A0%9C%EC%96%B4%EB%AC%B8.md)
 - [9장 타입 변환과 단축 평가](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/09_%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC_%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md)
+- [10장 객체 리터럴](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/10_%EA%B0%9D%EC%B2%B4%EB%A6%AC%ED%84%B0%EB%9F%B4.md)
