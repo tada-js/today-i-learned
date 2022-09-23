@@ -22,3 +22,4 @@
 - [9장 타입 변환과 단축 평가](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/09_%ED%83%80%EC%9E%85%EB%B3%80%ED%99%98%EA%B3%BC_%EB%8B%A8%EC%B6%95%ED%8F%89%EA%B0%80.md)
 - [10장 객체 리터럴](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/10_%EA%B0%9D%EC%B2%B4%EB%A6%AC%ED%84%B0%EB%9F%B4.md)
 - [11장 원시 값과 객체의 비교](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/11_%EC%9B%90%EC%8B%9C%EA%B0%92%EA%B3%BC_%EA%B0%9D%EC%B2%B4%EC%9D%98_%EB%B9%84%EA%B5%90.md)
+- [12장 함수](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/12_%ED%95%A8%EC%88%98.md)
