@@ -25,3 +25,5 @@
 - [12장 함수](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/12_%ED%95%A8%EC%88%98.md)
 
 - [13장 스코프](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/13_%EC%8A%A4%EC%BD%94%ED%94%84.md)
+
+- [14장 전역변수의 문제점](https://github.com/tada-js/today-i-learned/blob/main/%EB%8F%85%EC%84%9C/JS_DeepDive/14_%EC%A0%84%EC%97%AD%EB%B3%80%EC%88%98%EC%9D%98_%EB%AC%B8%EC%A0%9C%EC%A0%90.md)
